@@ -5,44 +5,60 @@
     --color2: #F1E5DF; 
   }
 
-  body {
-    background: var(--color1);
-  }
+* {
+    padding: 0;
+    margin: 0;
+}
 
-  div {
+body {
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main {
+    background: var(--color1);
+    width: 400px;
+    height: 300px;
+}
+
+div {
     background: var(--color2);
     position: absolute;
     left: 50px;
     top: 75px;
-  }
-  
-  .ball {
+}
+
+.ball {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-  }
+}
 
-  .mid-ball {
+.mid-ball {
     width: 100px;
     height: 100px;
     border-radius: 50%;
     clip-path: polygon(50% 0%, 50% 100%, 100% 100%, 100% 0%);
-  } 
+} 
 
-  .rectangle {
+.rectangle {
     top: 175px;
     width: 100px;
     height: 50px;
-  }
+}
 
-  .cylinder {
+.cylinder {
     width: 100px;
     height: 150px;
     left: 175px;
     border-radius: 50px;
-  }
+}
 
-  .last {
+.last {
     width: 50px;
     left: 300px;
-  }
+}
