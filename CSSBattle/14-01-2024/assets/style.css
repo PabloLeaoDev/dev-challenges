@@ -13,16 +13,17 @@
 body {
     width: 100vw;
     height: 100vh;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 main {
     background: var(--color1);
     width: 400px;
     height: 300px;
+
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 div {
