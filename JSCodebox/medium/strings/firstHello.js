@@ -14,7 +14,7 @@ function firstHello(sentence) {
 // ou
 
 function firstHello1(sentence) {
-    return sentence.startsWith('Hello')
+    return sentence.startsWith('Hello');
 }
 
 // ou
@@ -31,21 +31,21 @@ function firstHello2(sentence) {
 
 function firstHello(sentence) {
     let word ="Hello";
-    if (sentence.slice(0, word.length)==="Hello") {return true;}
+    if (sentence.slice(0, word.length) === "Hello") {return true;}
     else {return false;}
 }
 
 // ou
 
 function firstHello(sentence) {
-    sentence.trim()
-    return sentence.indexOf("Hello")===0
+    sentence.trim();
+    return sentence.indexOf("Hello") === 0;
 }
 
 // ou
 
 function firstHello(sentence) {
-    return sentence.substring(0, 5)==="Hello" ? true: false;;
+    return sentence.substring(0, 5) === "Hello" ? true: false;
 }
 
 console.log(firstHello('Hello, World!'));
