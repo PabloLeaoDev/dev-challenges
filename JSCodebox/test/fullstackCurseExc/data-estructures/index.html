@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="get" id="form">
+        <p>
+            <label for="name">Nome: </label>
+            <input type="text" name="name" id="name">
+        </p>
+        <p>
+            <label for="middlename">Sobrenome: </label>
+            <input type="text" name="middlename" id="middlename">  
+        </p>
+            
+        <p>
+            <label for="weight">Peso: </label>
+            <input type="text" name="weight" id="weight">
+        </p>
+        
+        <p>
+            <label for="height">Altura: </label>
+            <input type="text" name="height" id="height">
+        </p>
+        
+        
+        <button onclick="savesData()">Enviar</button>
+    </form>
+    <div id="result"></div>
+    <script>
+        let data = [];
+        function savesData() {
+            const form = document.getElementById('form');
+            const name = document.getElementById('name').value;
+            const middlename = document.getElementById('middlename').value;
+            const weight = document.getElementById('weight').value;
+            const height = document.getElementById('height').value;
+            const result = document.getElementById('result');
+
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+            });
+
+            data.push({
+                nome: name,
+                sobrenome: middlename,
+                peso: weight,
+                altura: height
+            });
+
+            result.innerHTML += `<p>${name} ${middlename} ${weight} ${height}</p>`;
+
+            console.log(data);
+        }
+    </script>
+</body>
+</html>
