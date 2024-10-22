@@ -1,4 +1,4 @@
 exports.globalMiddleware = (req, res, next) => {
-    console.log(`\n${req.body.nome}, você passou pelo Mr. Middleware\n`);
+    res.locals.aLocalVariable = 'Local Variable Value';
     next();
 }
