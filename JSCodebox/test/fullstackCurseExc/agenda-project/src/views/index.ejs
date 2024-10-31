@@ -1,0 +1,16 @@
+<%- include('includes/head'); %>
+    <section class="container">
+        <h1>
+            <% if (typeof title !== 'undefined') { %>
+                <%= title %>
+            <% } else { %>
+                The title was not sent.
+            <% } %>
+        </h1>
+        <form action="/" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            Nome: <input type="text" name="nome">
+            <button>Enviar</button>
+        </form>
+    </section>
+<%- include('includes/footer'); %>
