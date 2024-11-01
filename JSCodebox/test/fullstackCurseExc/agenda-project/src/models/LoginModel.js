@@ -17,9 +17,10 @@ class Login {
 
     async register() {
         this.validate();
-        if (this.errors.length > 0) return;
+        if (this.errors.length > 0) return false;
         try {
             this.user = await LoginModel.create(this.body);
+            return true;
         } catch (error) {
             console.log(error);
         }
@@ -28,7 +29,7 @@ class Login {
     validate() {
         this.cleanUp();
         if (!validator.isEmail(this.body.email)) {
-            this.errors.push('Invalid e-mail!');
+            this.errors.push('Invalid e-mail.');
         }
         if (this.body.password.length < 3 || this.body.password.length > 50) {
             this.errors.push('Password must have between 3 and 50 characters long.');
