@@ -1,10 +1,11 @@
 exports.globalMiddleware = (req, res, next) => {
-    res.locals.aLocalVariable = 'Local Variable Value';
+    res.locals.errors = req.flash('errors');
+    res.locals.success = req.flash('success');
     next();
 }
 
-exports.checkCrsfError = (err, req, res, next) => {
-    if (err && err.code === 'EBADCSRFTOKEN') {
+exports.checkCsrfError = (err, req, res, next) => {
+    if (err) {
         return res.render('404');
     }
     next();

@@ -1,17 +1,13 @@
 const express= require('express');
 const route = express.Router();
 const homeController = require('./src/controllers/homeController');
+const loginController = require('./src/controllers/loginController');
 
-route.get('/', homeController.initialPage);
+// Home routes
+route.get('/', homeController.index);
 
-//               parâmetro opcional
-
-// route.get('/testes/:idUser?/:param?', (req, res) => {
-    // console.log(req.params);
-    // console.log(req.query);
-    // res.send(req.params);
-// })
-
-route.post('/', homeController.treatPost);
+// Login routes
+route.get('/login', loginController.index);
+route.post('/login/register', loginController.register);
 
 module.exports = route;

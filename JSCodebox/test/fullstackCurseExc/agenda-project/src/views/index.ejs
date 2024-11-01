@@ -1,16 +1,24 @@
-<%- include('includes/head'); %>
-    <section class="container">
-        <h1>
-            <% if (typeof title !== 'undefined') { %>
-                <%= title %>
-            <% } else { %>
-                The title was not sent.
-            <% } %>
-        </h1>
-        <form action="/" method="POST">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            Nome: <input type="text" name="nome">
-            <button>Enviar</button>
-        </form>
-    </section>
-<%- include('includes/footer'); %>
+<%- include('includes/head') %>
+<%- include('includes/nav') %>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8 my-3">
+            <h1 class="text-center">Agenda</h1>
+            <p class="text-center lead">Seus contatos estão abaixo</p>
+
+            <div class="responsive-table">
+                <table class="table my-3">
+                    <tr>
+                        <td>Fulano</td>
+                        <td>Da Silva</td>
+                        <td>15352351351</td>
+                        <td>fulanodasilva123@email.com</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</div>
+<%- include('includes/footer') %>
