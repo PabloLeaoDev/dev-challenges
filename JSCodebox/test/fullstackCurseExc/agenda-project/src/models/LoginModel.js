@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const bcryptjs = require('bcryptjs');
 
 const LoginSchema = new mongoose.Schema({
     email: {type: String, required: true},
@@ -18,12 +19,31 @@ class Login {
     async register() {
         this.validate();
         if (this.errors.length > 0) return false;
-        try {
-            this.user = await LoginModel.create(this.body);
-            return true;
-        } catch (error) {
-            console.log(error);
+
+        const isUserExists = await this.userExists(1);
+
+        if (isUserExists) return false;
+
+        const salt = bcryptjs.genSaltSync();
+        this.body.password = bcryptjs.hashSync(this.body.password, salt);
+
+        this.user = await LoginModel.create(this.body);
+        return true;
+    }
+
+    async login() {
+        this.validate();
+        if (this.errors.length > 0) return false;
+
+        const isUserExists = await this.userExists(2);
+
+        if (!isUserExists) return false;
+
+        if (!bcryptjs.compareSync(this.body.password, this.user.password)) {
+            this.errors.push('Invalid password');
+            return false;
         }
+        return true;
     }
 
     validate() {
@@ -47,6 +67,24 @@ class Login {
             email: this.body.email,
             password: this.body.password
         };
+    }
+
+    async userExists(accessType) {
+        this.user = await LoginModel.findOne({ email: this.body.email });
+
+        switch (accessType) {
+            case 1:
+                if (this.user) {
+                    this.errors.push('User already exists.');
+                    return true;
+                }
+            case 2:
+                if (!this.user) {
+                    this.errors.push('User does not exists');
+                    return false;
+                }
+        }
+        return true;
     }
 
 }
