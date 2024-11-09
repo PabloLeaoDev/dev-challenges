@@ -48,19 +48,16 @@ class Login {
 
     validate() {
         this.cleanUp();
-        if (!validator.isEmail(this.body.email)) {
-            this.errors.push('Invalid e-mail.');
-        }
-        if (this.body.password.length < 3 || this.body.password.length > 50) {
+        if (!validator.isEmail(this.body.email)) this.errors.push('Invalid e-mail.');
+        
+        if (this.body.password.length < 3 || this.body.password.length > 50) 
             this.errors.push('Password must have between 3 and 50 characters long.');
-        }
     }
 
     cleanUp() {
         for (let key in this.body) {
-            if (typeof this.body[key] != 'string') {
-                this.body[key] = ''; 
-            }
+            if (typeof this.body[key] != 'string') this.body[key] = ''; 
+            
         }
 
         this.body = {
