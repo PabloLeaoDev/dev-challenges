@@ -31,13 +31,15 @@ class Contact {
     }
 
     async register() {
-        this.validate();
+        await this.validate();
         if (this.errors.length > 0) return;
         this.contact = await ContactModel.create(this.body);
     }
 
-    validate() {
+    async validate() {
         this.cleanUp();
+        const contactExists = await this.contactExists();
+        if (contactExists) this.errors.push('Contact already exists');
         if (!this.body.name) this.errors.push('Name is required field.');
         if (this.body.email && !validator.isEmail(this.body.email)) this.errors.push('Invalid e-mail.');
         if (!this.body.email && !this.body.phoneNumber) 
@@ -67,6 +69,33 @@ class Contact {
     async delete(id) {
         if (typeof id !== 'string') return;
         this.contact = await ContactModel.findByIdAndDelete(id, this.body);
+    }
+
+    async contactExists() {
+        if (this.body.middlename !== '') {
+            this.contact = await ContactModel.findOne({ name: this.body.name, middlename: this.body.middlename });
+        } else {
+            this.contact = await ContactModel.findOne({ name: this.body.name });
+        }
+
+        if (!this.contact) {
+            if (this.body.email !== '') {
+                this.contact = await ContactModel.findOne({ email: this.body.email });
+            }
+        }
+        
+
+        if (!this.contact) {
+            if (this.body.phoneNumber !== '') {
+                this.contact = await ContactModel.findOne({ phoneNumber: this.body.phoneNumber });
+            }
+        }
+
+        if (!this.contact) {
+            return false;
+        }
+
+        return true;
     }
 }
 

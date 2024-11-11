@@ -20,9 +20,9 @@ class Login {
         this.validate();
         if (this.errors.length > 0) return false;
 
-        const isUserExists = await this.userExists(1);
+        const userExists = await this.userExists(1);
 
-        if (isUserExists) return false;
+        if (userExists) return false;
 
         const salt = bcryptjs.genSaltSync();
         this.body.password = bcryptjs.hashSync(this.body.password, salt);
@@ -35,9 +35,9 @@ class Login {
         this.validate();
         if (this.errors.length > 0) return false;
 
-        const isUserExists = await this.userExists(2);
+        const userExists = await this.userExists(2);
 
-        if (!isUserExists) return false;
+        if (!userExists) return false;
 
         if (!bcryptjs.compareSync(this.body.password, this.user.password)) {
             this.errors.push('Invalid password');
@@ -57,7 +57,6 @@ class Login {
     cleanUp() {
         for (let key in this.body) {
             if (typeof this.body[key] != 'string') this.body[key] = ''; 
-            
         }
 
         this.body = {
