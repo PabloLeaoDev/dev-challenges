@@ -21,12 +21,8 @@ app.use(helmet());
 // trata o PUT e POST
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
-app.use(csrf());
 app.use(globalMiddleware);
-app.use(checkCrsfError);
-app.use(csrfMiddleware);
 app.use(express.static(path.resolve(__dirname, 'public')));
-app.use(routes);
 
 const sessionOptions = session({
     secret: 'anything',
@@ -37,8 +33,13 @@ const sessionOptions = session({
         maxAge: 1000 * 60
     }
 });
+
 app.use(sessionOptions);
+app.use(csrf());
+app.use(checkCrsfError);
+app.use(csrfMiddleware);
 app.use(flash());
+app.use(routes);
 
 app.set('views', path.resolve(__dirname, 'src', 'views'));
 app.set('view engine', 'ejs');
