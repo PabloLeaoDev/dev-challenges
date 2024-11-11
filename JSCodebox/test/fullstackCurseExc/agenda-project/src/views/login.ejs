@@ -5,13 +5,13 @@
         <div class="col-lg-2"></div>
         <div class="col-lg-8 my-3">
             <h1 class="text-center">Login</h1>
-            <p class="text-center lead">Faça login ou crie sua conta abaixo</p>
+            <p class="text-center lead">Log in or create your account below</p>
 
             <%- include('includes/messages') %>
 
             <div class="row">
                 <div class="col-lg my-5">
-                    <h4>Faça seu cadastro</h4>
+                    <h4>Register now</h4>
                     <p>Case you haven't an account, complete the form bellow</p>
                     <form class="form-register" action="/login/register" method="post">
                         <input type="hidden" name="_csrf" value=<%= csrfToken %>>
