@@ -18,6 +18,7 @@ module.exports = {
     'no-console': 'off',
     'comma-dangle': 'off',
     'class-methods-use-this': 'off',
-    'import/no-extraneous-dependencies': 'off'
+    'import/no-extraneous-dependencies': 'off',
+    'import/first': 'off'
   }
 };
