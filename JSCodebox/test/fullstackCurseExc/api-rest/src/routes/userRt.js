@@ -1,13 +1,16 @@
 import { Router } from 'express';
 import userCtrl from '../controllers/UserCtrl';
+import loginRequired from '../middlewares/loginRequired';
 
 const router = new Router();
 
-router.post('/', userCtrl.store);
+// complete CRUD, but uncommon in applications of this type
 router.get('/', userCtrl.index);
-router.get('/:id', userCtrl.show);
-router.put('/:id', userCtrl.update);
-router.delete('/:id', userCtrl.delete);
+// router.get('/:id', userCtrl.show);
+
+router.post('/', userCtrl.store);
+router.put('/', loginRequired, userCtrl.update);
+router.delete('/', loginRequired, userCtrl.delete);
 
 export default router;
 

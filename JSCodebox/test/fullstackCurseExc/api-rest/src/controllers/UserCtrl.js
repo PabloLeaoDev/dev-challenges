@@ -4,7 +4,8 @@ class UserCtrl {
   async store(req, res) {
     try {
       const newUser = await User.create(req.body);
-      return res.json(newUser);
+      const { id, name, email } = newUser;
+      return res.json({ id, name, email });
     } catch (e) {
       console.log(e);
       return res.status(400).json({
@@ -15,7 +16,7 @@ class UserCtrl {
 
   async index(req, res) {
     try {
-      const users = await User.findAll();
+      const users = await User.findAll({ attributes: ['id', 'name', 'email'] });
       return res.json(users);
     } catch (e) {
       return res.json(null);
@@ -25,7 +26,8 @@ class UserCtrl {
   async show(req, res) {
     try {
       const user = await User.findByPk(req.params.id);
-      return res.json(user);
+      const { id, name, email } = user;
+      return res.json({ id, name, email });
     } catch (e) {
       return res.json(null);
     }
@@ -33,15 +35,15 @@ class UserCtrl {
 
   async update(req, res) {
     try {
-      const { id } = req.params;
+      const { userId } = req;
 
-      if (!id) {
+      if (!userId) {
         return res.status(400).json({
           errors: ['ID does not exists']
         });
       }
 
-      const user = await User.findByPk(id);
+      const user = await User.findByPk(userId);
 
       if (!user) {
         return res.status(400).json({
@@ -50,7 +52,8 @@ class UserCtrl {
       }
 
       const newUserData = await user.update(req.body);
-      return res.json(newUserData);
+      const { id, name, email } = newUserData;
+      return res.json({ id, name, email });
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message)
@@ -60,15 +63,15 @@ class UserCtrl {
 
   async delete(req, res) {
     try {
-      const { id } = req.params;
+      const { userId } = req;
 
-      if (!id) {
+      if (!userId) {
         return res.status(400).json({
           errors: ['ID does not exists']
         });
       }
 
-      const user = await User.findByPk(id);
+      const user = await User.findByPk(userId);
 
       if (!user) {
         return res.status(400).json({
@@ -77,8 +80,9 @@ class UserCtrl {
       }
 
       await user.destroy();
+      const { id, name, email } = user;
       return res.json({
-        user,
+        user: { id, name, email },
         successMessage: 'User successfully deleted'
       });
     } catch (e) {
