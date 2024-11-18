@@ -8,7 +8,7 @@ const router = new Router();
 router.get('/', userCtrl.index);
 // router.get('/:id', userCtrl.show);
 
-router.post('/', userCtrl.store);
+router.post('/', loginRequired, userCtrl.store);
 router.put('/', loginRequired, userCtrl.update);
 router.delete('/', loginRequired, userCtrl.delete);
 
