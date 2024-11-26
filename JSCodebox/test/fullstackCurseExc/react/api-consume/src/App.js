@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import store, { persistor } from './store';
+import history from './services/history';
 import GlobalStyle from './styles/GlobalStyles';
 import Header from './components/Header';
 import CustomRouter from './routes';
@@ -14,7 +15,7 @@ function App() {
     <>
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-          <BrowserRouter>
+          <BrowserRouter history={history}>
             <Header />
             <CustomRouter />
             <GlobalStyle />
