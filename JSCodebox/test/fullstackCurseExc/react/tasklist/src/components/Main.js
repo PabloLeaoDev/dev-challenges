@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Main.css';
-
-import { FaPlus, FaEdit, FaWindowClose } from 'react-icons/fa';
+import Form from './Form';
+import Tasks from './Tasks';
 
 export default class Main extends Component {
   state = {
@@ -10,6 +10,24 @@ export default class Main extends Component {
     isEdit: false,
     editIndex: -1
   };
+
+  componentDidMount() {
+    const tasks = JSON.parse(localStorage.getItem('tasks'));
+
+    if (!tasks) return;
+
+    this.setState({
+      tasks: [...tasks]
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { tasks } = this.state;
+
+    if (tasks === prevState.tasks) return;
+
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -71,24 +89,18 @@ export default class Main extends Component {
     return (
       <div className='main'>
         <h1>Tasklist</h1>
-        <form onSubmit={this.handleSubmit} action='#' className='form'>
-          <input onChange={this.handleChange} type='text' value={newTask} />
-          <button type='submit'>
-            <FaPlus />
-          </button>
-        </form>
 
-        <ul className='tasks'>
-          {tasks.map((task, index) => (
-            <li key={task}>
-              {task}
-              <div>
-                <FaEdit onClick={(e) => this.handleEdit(e, index)} className='edit' />
-                <FaWindowClose onClick={(e) => this.handleDelete(e, index)} className='delete' />
-              </div>
-            </li>
-          ))}
-        </ul>
+        <Form
+          handleSubmit={this.handleSubmit}
+          handleChange={this.handleChange}
+          newTask={newTask}
+        />
+
+        <Tasks
+          tasks={tasks}
+          handleEdit={this.handleEdit}
+          handleDelete={this.handleDelete}
+        />
       </div>
     );
   }

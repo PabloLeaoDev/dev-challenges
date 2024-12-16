@@ -29,3 +29,23 @@ export class Stack<T> {
     }
   }
 }
+
+// type predicate
+export function isNumber(value: unknown): value is number {
+  return typeof value === 'number';
+}
+
+export function sum<T>(...args: T[]): number {
+  console.log('args - ', args);
+  const result = args.reduce((sum, value) => {
+    if (isNumber(sum) && isNumber(value)) {
+      return sum + value;
+    }
+    return sum;
+  }, 0);
+  return result;
+}
+
+console.log(sum(1, 2, 3));
+console.log(sum('a', 'b', 'c'));
+console.log(sum(...[1, 2, 3]));
