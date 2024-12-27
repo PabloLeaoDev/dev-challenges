@@ -5,7 +5,7 @@ import generateCards from './genCards';
   let flippedCards: HTMLDivElement[] = [];
   let lockBoard = false;
 
-  (function setCards() {
+  (function setCards(): void {
     const pairOfCards = generateCards(10);
     pairOfCards.forEach((card) => memoryBoard.appendChild(card));
   })();
@@ -15,7 +15,7 @@ import generateCards from './genCards';
 
   activateListener();
 
-  function flipCard(this: HTMLDivElement) {
+  function flipCard(this: HTMLDivElement): void {
     if (lockBoard) return;
     if (this === flippedCards[0]) return;
 
@@ -25,7 +25,7 @@ import generateCards from './genCards';
     if (flippedCards.length === 2) checkMatch();
   }
 
-  function checkMatch() {
+  function checkMatch(): void {
     const [card1, card2] = flippedCards;
     const isMatch = card1.dataset.card === card2.dataset.card;
 
@@ -36,20 +36,20 @@ import generateCards from './genCards';
     }
   }
 
-  function disableCards() {
+  function disableCards(): void {
     flippedCards.forEach((card) => card.removeEventListener('click', flipCard));
     restCardsInGame -= 2;
     resetBoard();
   }
 
-  function unflipCards() {
+  function unflipCards(): void {
     setTimeout(() => {
       flippedCards.forEach((card) => card.classList.remove('flipped'));
       resetBoard();
     }, 1000);
   }
 
-  function resetBoard() {
+  function resetBoard(): void {
     [flippedCards, lockBoard] = [[], false];
     if (restCardsInGame === 0) {
       setTimeout(() => {
@@ -60,7 +60,7 @@ import generateCards from './genCards';
     }
   }
 
-  function activateListener() {
+  function activateListener(): void {
     cards.forEach((card) => card.addEventListener('click', flipCard));
   }
 })();
