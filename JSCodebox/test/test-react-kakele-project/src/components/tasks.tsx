@@ -12,8 +12,8 @@ function TasksList() {
             key={task.name}
             className={styles.card}
             >
-              <p className={styles.stats}>Type: {task.type}</p>
               <p className={styles.name}>Name: {task.name}</p>
+              <p className={styles.stats}>Type: {task.type}</p>
               <p className={styles.stats}>Target: {task.target}</p>
               <p className={styles.stats}>Amount: {task.amount}</p>
               <p className={styles.stats}>Level: {task.level}</p>

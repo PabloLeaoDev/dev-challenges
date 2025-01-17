@@ -43,12 +43,13 @@ function ItemsList() {
             <p className={styles.stats}>Energy: {item.energy || 'null'}</p>
             <p className={styles.stats}>Value: {item.value}</p>
             <p className={styles.stats}>Sources: {item.sources}</p>
-            <p className={styles.name}>Name: {item.name}</p>
             <p className={styles.stats}>Rarity: {item.rarity}</p>
             <p className={styles.stats}>Type: {item.type}</p>
-            <p className={styles.stats}>Attack: {item.stats?.attack || 'null'}</p>
-            <p className={styles.stats}>Magic: {item.stats?.magic || 'null'}</p>
-            <p className={styles.stats}>Armor: {item.stats?.armor || 'null'}</p>
+            <div className="stats">
+              <p className={styles.stats}>Attack: {item.stats?.attack || 'null'}</p>
+              <p className={styles.stats}>Magic: {item.stats?.magic || 'null'}</p>
+              <p className={styles.stats}>Armor: {item.stats?.armor || 'null'}</p>
+            </div>
             <p className={styles.stats}>Slot: {item.slot || 'null'}</p>
           </div>
         ))}
