@@ -17,6 +17,22 @@ export function cloneObj(original) {
   return copy;
 }
 
+export function findItems(targetItem, ignoredItems) {
+  const rarities = ['Common', 'Uncommon', 'Rare', 'Legendary'];
+
+  for (const rarity of rarities) {
+    const item = items.find(
+      (item) =>
+        item.rarity === rarity &&
+        item.level >=  Math.floor(targetItem.level / 2) &&
+        item.slot === targetItem.slot &&
+        !ignoredItems.includes(item.id.toString())
+    );
+
+    if (item) return item;
+  }
+}
+
 export function getBless(itemName, blessValue, ignoredItems) {
   const itemCount = {
     warlordGold: 0,
@@ -55,8 +71,6 @@ export function getBless(itemName, blessValue, ignoredItems) {
       targetItem.gold = 100_000_000 * blessValue;
     }
 
-    // console.log(targetItem);
-
     itemCount.goldValues.push(targetItem);
 
     const sortedItems = blessItems.sort((a, b) => a.level - b.level || a.value - b.value);
@@ -73,16 +87,12 @@ export function getBless(itemName, blessValue, ignoredItems) {
       return clone;
     });
 
-    // console.log(result);
-
     return result;
   }
 
   const targetItem = items.find((item) => item.name === itemName);
 
   if (targetItem.rarity === 'Legendary') {
-    const rarities = ['Common', 'Uncommon', 'Rare', 'Legendary'];
-
     for (let index = 0; index < blessValue; index++) {
       // if (index === 0) {
       //   itemCount.warlordGold += 100_000_000;
@@ -92,18 +102,10 @@ export function getBless(itemName, blessValue, ignoredItems) {
       itemCount.warlordGold += 100_000_000;
     }
 
-    for (const rarity of rarities) {
-      const item = items.find(
-        (item) =>
-          item.rarity === rarity &&
-          item.level >=  Math.floor(targetItem.level / 2) &&
-          item.slot === targetItem.slot &&
-          !ignoredItems.includes(item.id.toString())
-      );
+    const sacrificialItem = findItems(targetItem, ignoredItems);
 
-      item.bless = blessValue;
-      getBlessItems(item, blessValue);
-    }
+    sacrificialItem.bless = blessValue;
+    getBlessItems(sacrificialItem, blessValue);
   } else {
     getBlessItems(targetItem, blessValue + 1);
 
@@ -172,24 +174,14 @@ export function getBlessThree(string, number, ignoredItems) {
   result.children = [];
 
   if (result.rarity === 'Legendary') {
-    const rarities = ['Common', 'Uncommon', 'Rare', 'Legendary'];
+    const sacrificialItem = findItems(targetItem, ignoredItems);
 
-    for (const rarity of rarities) {
-      const item = items.find(
-        (x) =>
-          x.rarity === rarity &&
-          x.level >= targetItem.level / 2 &&
-          x.slot === targetItem.slot &&
-          !ignoredItems.includes(x.id.toString())
-      );
+    sacrificialItem._id = id++;
+    sacrificialItem.bless = number === 1 ? 0 : number - 1;
+    sacrificialItem.currentBless = number === 1 ? 0 : number - 1;
+    sacrificialItem.children = getBlessItems(sacrificialItem, number === 1 ? 0 : number - 1);
 
-      item._id = id++;
-      item.bless = number === 1 ? 0 : number - 1;
-      item.currentBless = number === 1 ? 0 : number - 1;
-      item.children = getBlessItems(item, number === 1 ? 0 : number - 1);
-
-      result.children = [...result.children, item];
-    }
+    result.children = [...result.children, sacrificialItem];
 
     result._id = 0;
   } else {
