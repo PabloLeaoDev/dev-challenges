@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Bless Calculators</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, button {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .results {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test Bless Calculators</h1>
+
+        <label for="item-name">Item Name:</label>
+        <input type="text" id="item-name" placeholder="Enter item name...">
+
+        <label for="bless-level">Bless Level:</label>
+        <input type="number" id="bless-level" placeholder="Enter bless level..." min="0" max="10">
+
+        <label for="ignored-items">Ignored Items (comma-separated IDs):</label>
+        <input type="text" id="ignored-items" placeholder="e.g., 1,2,3">
+
+        <button id="run-getBless">Run getBless</button>
+        <button id="run-getBlessThree">Run getBlessThree</button>
+
+        <div class="results" id="results">
+            <strong>Results:</strong>
+            <pre id="output">No results yet.</pre>
+        </div>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+</body>
+</html>
