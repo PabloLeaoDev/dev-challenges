@@ -1,17 +1,31 @@
 import fastify from 'fastify';
-import { knex } from './database';
+import { env } from './env';
+import { db } from './database';
+import { transactionsRoutes } from './routes/transactions';
+
+import crypto from 'node:crypto';
 
 const app = fastify();
 
-app.get('/hello', async () => {
-  const tables = await knex('sqlite_schema').select('*');
+app.register(transactionsRoutes, {
+  prefix: 'transactions',
+});
 
-  return tables;
+app.get('/test', async () => {
+  const transactions = await db('transactions')
+    .insert({
+      id: crypto.randomUUID(),
+      title: 'test',
+      amount: 1000,
+    })
+    .returning('*');
+
+  return transactions;
 });
 
 app
   .listen({
-    port: 3333,
+    port: env.PORT,
   })
   .then(() => {
     console.log('HTTP Server Running!');
