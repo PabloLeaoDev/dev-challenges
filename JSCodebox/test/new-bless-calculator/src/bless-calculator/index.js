@@ -1,37 +1,5 @@
 import items from '../kakele-data/items.json' with { type: 'json' };
-
-// utility function
-export function cloneObj(original) {
-  if (typeof original !== 'object' || original === null) {
-    return original;
-  }
-
-  const copy = Array.isArray(original) ? [] : {};
-
-  for (const key in original) {
-    if (Object.prototype.hasOwnProperty.call(original, key)) {
-      copy[key] = cloneObj(original[key]);
-    }
-  }
-
-  return copy;
-}
-
-export function findItems(targetItem, ignoredItems) {
-  const rarities = ['Common', 'Uncommon', 'Rare', 'Legendary'];
-
-  for (const rarity of rarities) {
-    const item = items.find(
-      (item) =>
-        item.rarity === rarity &&
-        item.level >=  Math.floor(targetItem.level / 2) &&
-        item.slot === targetItem.slot &&
-        !ignoredItems.includes(item.id.toString())
-    );
-
-    if (item) return item;
-  }
-}
+import { cloneObj, findItems } from '../utils/utility';
 
 export function getBless(itemName, blessValue, ignoredItems) {
   const itemCount = {
@@ -40,6 +8,7 @@ export function getBless(itemName, blessValue, ignoredItems) {
     inventory: {},
   };
 
+  // this function create children items
   function getBlessItems(targetItem, blessValue) {
     if (blessValue <= 0 || targetItem.bless === 0) {
       return [];
@@ -106,6 +75,9 @@ export function getBless(itemName, blessValue, ignoredItems) {
 
     sacrificialItem.bless = blessValue;
     getBlessItems(sacrificialItem, blessValue);
+    itemCount.inventory = Object.fromEntries(
+      Object.entries(itemCount.inventory).sort((a, b) => b[1].count - a[1].count)
+    );
   } else {
     getBlessItems(targetItem, blessValue + 1);
 
@@ -116,18 +88,18 @@ export function getBless(itemName, blessValue, ignoredItems) {
     }
   }
 
-  if (targetItem.rarity === 'Legendary') {
-    itemCount.inventory = Object.fromEntries(
-      Object.entries(itemCount.inventory).sort((a, b) => b[1].count - a[1].count)
-    );
-  }
+  // if (targetItem.rarity === 'Legendary') {
+  //   itemCount.inventory = Object.fromEntries(
+  //     Object.entries(itemCount.inventory).sort((a, b) => b[1].count - a[1].count)
+  //   );
+  // }
 
   // console.log(itemCount.goldValues);
 
   return itemCount;
 }
 
-export function getBlessThree(string, number, ignoredItems) {
+export function getBlessThree(itemName, blessValue, ignoredItems) {
   let result = {};
   let id = 1;
 
@@ -137,11 +109,11 @@ export function getBlessThree(string, number, ignoredItems) {
     }
 
     const blessItems = items.filter(
-      (x) =>
-        x.rarity === item.rarity &&
-        x.level >= Math.floor(item.level / 2) &&
-        x.slot === item.slot &&
-        !ignoredItems.includes(x.id.toString())
+      (targetItem) =>
+        targetItem.rarity === item.rarity &&
+        targetItem.level >= Math.floor(item.level / 2) &&
+        targetItem.slot === item.slot &&
+        !ignoredItems.includes(targetItem.id.toString())
     );
 
     if (blessItems.length === 0) {
@@ -168,7 +140,7 @@ export function getBlessThree(string, number, ignoredItems) {
     return result;
   }
 
-  const targetItem = items.find((x) => x.name === string);
+  const targetItem = items.find((item) => item.name === itemName);
 
   result = { ...targetItem };
   result.children = [];
@@ -177,9 +149,9 @@ export function getBlessThree(string, number, ignoredItems) {
     const sacrificialItem = findItems(targetItem, ignoredItems);
 
     sacrificialItem._id = id++;
-    sacrificialItem.bless = number === 1 ? 0 : number - 1;
-    sacrificialItem.currentBless = number === 1 ? 0 : number - 1;
-    sacrificialItem.children = getBlessItems(sacrificialItem, number === 1 ? 0 : number - 1);
+    sacrificialItem.bless = blessValue === 1 ? 0 : blessValue - 1;
+    sacrificialItem.currentBless = blessValue === 1 ? 0 : blessValue - 1;
+    sacrificialItem.children = getBlessItems(sacrificialItem, blessValue === 1 ? 0 : blessValue - 1);
 
     result.children = [...result.children, sacrificialItem];
 
@@ -188,8 +160,8 @@ export function getBlessThree(string, number, ignoredItems) {
     result._id = id;
     id++;
 
-    result.currentBless = number;
-    result.children = getBlessItems(targetItem, number);
+    result.currentBless = blessValue;
+    result.children = getBlessItems(targetItem, blessValue);
   }
 
   return result;
