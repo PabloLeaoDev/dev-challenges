@@ -5,19 +5,24 @@ import { db } from '../database';
 import checkSessionIdExists from '../middlewares/checkSessionIdExists';
 
 export async function transactionsRoutes(app: FastifyInstance) {
+  // app.addHook('preHandler', async (request, reply) => {
+  //   console.log(`[${request.method}]`);
+  // });
+
   app.get(
     '/',
     {
       preHandler: [checkSessionIdExists],
     },
     async (request) => {
-      const { sessionId } = request.cookies;
+      const sessionId = request.cookies.session_id;
+      if (!sessionId) return;
 
-      const transactions = await db('transactions')
+      const transaction = await db('transactions')
         .where('session_id', sessionId)
         .select();
 
-      return { transactions };
+      return { transaction };
     },
   );
 
