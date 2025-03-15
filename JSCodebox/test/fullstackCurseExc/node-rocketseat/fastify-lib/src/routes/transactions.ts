@@ -5,9 +5,9 @@ import { db } from '../database';
 import checkSessionIdExists from '../middlewares/checkSessionIdExists';
 
 export async function transactionsRoutes(app: FastifyInstance) {
-  // app.addHook('preHandler', async (request, reply) => {
-  //   console.log(`[${request.method}]`);
-  // });
+  app.addHook('preHandler', async (request, reply) => {
+    console.log(`[${request.method}] ${request.url}`);
+  });
 
   app.get(
     '/',
